@@ -1,0 +1,4 @@
+apiVersion: apps.ascend.io/v1
+kind: Vault
+spec:
+  type: environment_variables

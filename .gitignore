@@ -1,0 +1,22 @@
+# virtualenv
+.venv/
+
+# pyenv
+.python-version
+
+# python file
+__pycache__
+*.pyc
+.pytest_cache
+
+# ruff cache
+.ruff_cache
+
+# packaging
+*.egg-info
+
+# Ascend compiler output folder
+ascend-out/
+
+# MacOS
+.DS_Store

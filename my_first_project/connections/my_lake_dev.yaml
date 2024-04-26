@@ -1,0 +1,6 @@
+apiVersion: apps.ascend.io/v1
+kind: Connection
+spec:
+  type: local_filesystem
+  config:
+    root: ./data

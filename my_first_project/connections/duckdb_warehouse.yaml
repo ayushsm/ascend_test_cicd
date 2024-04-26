@@ -1,0 +1,6 @@
+apiVersion: apps.ascend.io/v1
+kind: Connection
+spec:
+  type: duckdb
+  config:
+    path: ${parameter.duckdb_warehouse.path}

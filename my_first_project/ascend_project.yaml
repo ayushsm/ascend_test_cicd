@@ -1,0 +1,10 @@
+apiVersion: apps.ascend.io/v1
+kind: Project
+metadata:
+  name: my_first_project
+spec:
+  flows: ["flows/"]
+  deployments: ["deployments/", "../shared/deployments"]
+  connections: ["connections/", "../shared/connections"]
+  vaults: ["vaults/", "../shared/vaults"]
+  sources: ["src/", "../shared/src"]

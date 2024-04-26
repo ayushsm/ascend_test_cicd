@@ -1,0 +1,2 @@
+ascend-core[bigquery]
+ascend-core[snowflake]

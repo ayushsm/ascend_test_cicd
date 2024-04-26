@@ -1,0 +1,7 @@
+kind: Connection
+spec:
+  type: gcp.bigquery
+  config:
+    project: ascend-io-dev-jon
+    dataset: inception_dp
+    key: ${secret.environment.INCEPTION_BQ_PROD}

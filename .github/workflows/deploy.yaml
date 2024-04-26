@@ -1,0 +1,62 @@
+name: Build / Deploy Ascend Projects
+
+on:
+  push:
+    branches:
+      - main
+      - dev/**
+  pull_request:
+    branches:
+      - main
+      - dev/**
+
+env:
+  INCEPTION_BQ_DEV: ${{ secrets.INCEPTION_BQ_DEV }}
+  INCEPTION_BQ_PROD: ${{ secrets.INCEPTION_BQ_PROD }}
+  INCEPTION_SNOWFLAKE_DEV_USER: ${{ secrets.INCEPTION_SNOWFLAKE_DEV_USER }}
+  INCEPTION_SNOWFLAKE_DEV_PW: ${{ secrets.INCEPTION_SNOWFLAKE_DEV_PW }}
+  INCEPTION_SNOWFLAKE_PROD_USER: ${{ secrets.INCEPTION_SNOWFLAKE_PROD_USER }}
+  INCEPTION_SNOWFLAKE_PROD_PW: ${{ secrets.INCEPTION_SNOWFLAKE_PROD_PW }}
+
+jobs:
+  lint-and-scan: # runs on all PRs and pushes
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dev/build requirements
+        run: |  
+          pip install -r dev-requirements.txt
+
+      - name: Python security scan with Bandit
+        run: |
+          bandit -r ./*/flows ./*/src ./shared/src
+
+      - name: Lint with ruff
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          ruff check .
+          # exit-zero treats all errors as warnings.
+
+  deploy-prod: # runs on push to main only
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    needs: lint-and-scan
+    env: 
+      ASCEND_ENV: prod
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install ascend-core and other requirements
+        run: |  
+          pip install -r requirements.txt
+
+      - name: Run CLI command to deploy
+        run: |
+          echo "Deploying branch $GITHUB_REF to Ascend $ASCEND_ENV instance"
+          # just a sample, in future this would deploy to cloud
+          ascend run flow my_first_project bq_flow --deployment $ASCEND_ENV --compile --disable-optimizers

@@ -1,0 +1,20 @@
+apiVersion: apps.ascend.io/v1
+kind: Deployment
+spec:
+  # Arbitrary nested key-value pairs that can be referenced in other yaml files
+  parameters:
+    duckdb_warehouse:
+      path: ":memory:"
+    data_lake:
+      connection_name: my_lake
+
+  # Config defaults for various resources
+  configs:
+    - kind: Flow
+      name:
+        regex: .*
+      spec:
+        runtime: local  # can be overridden to reference a different runtime defined under `runtimes/` folder
+        data_plane:
+          # for a non-local deployment, this could be a cloud data warehouse, with the config containing account and database details
+          connection_name: duckdb_warehouse

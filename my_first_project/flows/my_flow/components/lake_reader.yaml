@@ -1,0 +1,18 @@
+apiVersion: apps.ascend.io/v1
+kind: Component
+spec:
+  read_connector:
+    connection_name: ${parameter.data_lake.connection_name}
+    asset_config:
+      files:
+        path: /data.csv
+      parser:
+        type: csv
+        has_header: true
+  tests:
+    columns:
+    - string_col:
+      - not_null
+      - unique
+    - num_col:
+      - not_null

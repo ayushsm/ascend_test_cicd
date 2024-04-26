@@ -1,0 +1,4 @@
+apiVersion: apps.ascend.io/v1
+kind: Runtime
+spec:
+  type: local
